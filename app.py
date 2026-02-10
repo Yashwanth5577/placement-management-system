@@ -14,7 +14,14 @@ app.secret_key = "placement_secret_key"
 BASE_DIR=os.path.abspath(os.path.dirname(__file__))
 DB_PATH=os.path.join(BASE_DIR,"placement.db")
 # ================= CONFIG =================
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///placement.db"
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 ADMIN_USERNAME = "admin"
