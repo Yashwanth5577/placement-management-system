@@ -24,6 +24,20 @@ else:
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+import os
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    # Render / Production
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+else:
+    # Local development
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///placement.db"
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
 
