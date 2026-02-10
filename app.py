@@ -296,11 +296,22 @@ def edit(id):
     student = Student.query.get_or_404(id)
 
     if request.method == "POST":
+        student.name = request.form["name"].strip()
         student.branch = request.form["branch"]
+        student.gender = request.form["gender"]
+        student.mobile = request.form["mobile"].strip()
+
+        student.tenth_percentage = float(request.form["tenth"])
+        student.inter_percentage = float(request.form["inter"])
+        student.btech_percentage = float(request.form["btech"])
+
         student.backlogs = int(request.form["backlogs"])
+
         db.session.commit()
-        flash("Student updated successfully", "success")
+
+        flash("✅ Student updated successfully!", "success")
         return redirect(url_for("students"))
+
 
     return render_template("edit.html", student=student)
 
