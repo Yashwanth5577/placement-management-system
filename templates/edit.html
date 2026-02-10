@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+  <div class="col-lg-8">
+
+    <div class="glass-card p-4 shadow-lg">
+
+      <h3 class="text-center fw-bold mb-4">
+        ✏️ Edit Student Details
+      </h3>
+
+      <form method="POST">
+
+        <!-- NAME -->
+        <div class="mb-3">
+          <label class="form-label">👤 Name</label>
+          <input type="text" class="form-control form-control-lg"
+                 name="name" value="{{ student.name }}" required>
+        </div>
+
+        <!-- ROLL (READ ONLY – SAFER) -->
+        <div class="mb-3">
+          <label class="form-label">🆔 Roll Number</label>
+          <input type="text" class="form-control form-control-lg"
+                 value="{{ student.roll }}" required>
+        </div>
+
+        <!-- BRANCH -->
+        <div class="mb-3">
+          <label class="form-label">🏫 Branch</label>
+          <select class="form-control form-control-lg" name="branch" required>
+            {% for b in ["CSE","CSE-AI","CSE-AIML","CSE-ML","CSE-DS","ECE","EEE","CIVIL","MECHANICAL"] %}
+              <option value="{{ b }}" {% if student.branch == b %}selected{% endif %}>
+                {{ b }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="mb-3">
+          <label class="form-label">📧 Email</label>
+          <input type="email" class="form-control form-control-lg"
+                 name="email" value="{{ student.email }}" required>
+        </div>
+
+        <!-- GENDER -->
+        <div class="mb-3">
+          <label class="form-label">⚧ Gender</label>
+          <select class="form-control form-control-lg" name="gender" required>
+            {% for g in ["Male","Female","Prefer Not to say"] %}
+              <option value="{{ g }}" {% if student.gender == g %}selected{% endif %}>
+                {{ g }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- MOBILE -->
+        <div class="mb-3">
+          <label class="form-label">📱 Mobile</label>
+          <input type="text" maxlength="10"
+                 class="form-control form-control-lg"
+                 name="mobile" value="{{ student.mobile }}" required>
+        </div>
+
+        <!-- 10th -->
+        <div class="mb-3">
+          <label class="form-label">📘 10th %</label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 name="tenth" value="{{ student.tenth }}" required>
+        </div>
+
+        <!-- INTER -->
+        <div class="mb-3">
+          <label class="form-label">📗 Inter / Diploma %</label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 name="inter" value="{{ student.inter }}" required>
+        </div>
+
+        <!-- BTECH -->
+        <div class="mb-3">
+          <label class="form-label">🎓 B.Tech %</label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 name="btech" value="{{ student.btech_percent }}" required>
+        </div>
+
+        <!-- BACKLOGS -->
+        <div class="mb-4">
+          <label class="form-label">📚 No. of Backlogs</label>
+          <input type="number" min="0"
+                 class="form-control form-control-lg"
+                 name="backlogs" value="{{ student.backlogs }}" required>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn btn-success btn-lg px-5">
+            💾 Update
+          </button>
+          <a href="{{ url_for('students') }}"
+             class="btn btn-outline-danger btn-lg px-5">
+            ❌ Cancel
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

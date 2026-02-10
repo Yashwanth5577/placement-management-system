@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ===== TOTAL COUNT ===== -->
+<div class="row mb-4 position-relative">
+  <div class="col-md-4 mx-auto">
+    <div class="glass-card text-center p-3 shadow-sm">
+      <h6 class="mb-1">👥 Total Registered Students</h6>
+      <h2 class="fw-bold text-primary">{{ total_students }}</h2>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REGISTRATION FORM ===== -->
+<div class="row justify-content-center position-relative">
+  <div class="col-lg-8">
+
+    <div class="glass-card p-4 shadow-lg">
+
+      <h3 class="handwriting-title text-center fw-bold mb-4">
+        ✨ Placement Registration Form ✨
+      </h3>
+
+      <form method="POST" onsubmit="return validateForm()">
+
+        <div class="mb-3">
+          <label class="fw-bold">👤 Name</label>
+          <input type="text" class="form-control form-control-lg"
+                 name="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">🆔 Roll Number</label>
+          <input type="text" class="form-control form-control-lg"
+                 name="roll" placeholder="Enter roll number" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">🏫 Branch</label>
+          <select class="form-control form-control-lg" name="branch" required>
+            <option value="">-- Select Branch --</option>
+            <option>CSE</option>
+            <option>CSE-AI</option>
+            <option>CSE-AIML</option>
+            <option>CSE-ML</option>
+            <option>CSE-DS</option>
+            <option>ECE</option>
+            <option>EEE</option>
+            <option>CIVIL</option>
+            <option>MECHANICAL</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">📧 Mail ID</label>
+          <input type="email" class="form-control form-control-lg"
+                 name="email" placeholder="Enter email address" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">⚧ Gender</label>
+          <select class="form-control form-control-lg" name="gender" required>
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer Not to say</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">📱 Mobile</label>
+          <input
+  type="tel"
+  name="mobile"
+  class="form-control"
+  maxlength="10"
+  pattern="[0-9]{10}"
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+  placeholder="10 digit mobile number"
+  required
+>
+
+
+        <div class="mb-3">
+          <label class="fw-bold">📘 10th %</label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 id="tenth" name="tenth"
+                 placeholder="0 – 100 only" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">📗 Inter / Diploma %</label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 id="inter" name="inter"
+                 placeholder="0 – 100 only" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold">
+            🎓 B.Tech CGPA / %
+            <small class="text-muted">(CGPA ≤ 10 auto converts)</small>
+          </label>
+          <input type="number" step="0.01" min="0" max="100"
+                 class="form-control form-control-lg"
+                 id="btech" name="btech"
+                 placeholder="Enter CGPA or %" required>
+          <small id="btechHelp" class="fw-semibold"></small>
+        </div>
+
+        <div class="mb-4">
+          <label class="fw-bold">📚 No. of Backlogs</label>
+          <input type="number" min="0"
+                 class="form-control form-control-lg"
+                 name="backlogs" placeholder="Enter backlogs" required>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn btn-success btn-lg px-5">
+            ✅ Register Student
+          </button>
+          <a href="{{ url_for('students') }}"
+             class="btn btn-outline-primary btn-lg px-5">
+            👁 View Students List
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VALIDATION SCRIPT ===== -->
+<script>
+function validateForm() {
+  const tenth = parseFloat(document.getElementById("tenth").value);
+  const inter = parseFloat(document.getElementById("inter").value);
+  const btech = parseFloat(document.getElementById("btech").value);
+
+  if (tenth > 100 || inter > 100 || btech > 100) {
+    alert("❌ Percentage cannot exceed 100");
+    return false;
+  }
+  return true;
+}
+
+document.getElementById("btech").addEventListener("input", function () {
+  const val = parseFloat(this.value);
+  const help = document.getElementById("btechHelp");
+
+  if (isNaN(val)) {
+    help.innerText = "";
+    return;
+  }
+  if (val <= 10) {
+    help.innerText = `✨ Converted Percentage: ${(val * 9.5).toFixed(2)}%`;
+    help.className = "text-success fw-semibold";
+  } else {
+    help.innerText = "✅ Valid Percentage";
+    help.className = "text-primary fw-semibold";
+  }
+});
+</script>
+
+
+
+</style>
+
+{% endblock %}

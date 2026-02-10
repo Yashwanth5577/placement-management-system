@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🚀 Placement Management System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Handwriting Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="main-bg">
+
+<!-- ================= NAVBAR ================= -->
+<header class="top-header d-flex justify-content-between align-items-center px-4">
+    <div class="title-wrapper text-center w-100">
+        <div class="elegant-title">
+            ✨ PLACEMENT MANAGEMENT SYSTEM ✨
+        </div>
+        <div class="elegant-subtitle">
+            Smart • Secure • Placement Ready 🎓
+        </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div class="header-actions d-flex gap-2">
+        <button class="btn theme-btn btn-lg" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+            🌙
+        </button>
+
+        <a href="{{ url_for('logout') }}"
+           onclick="return confirm('Are you sure you want to logout?')"
+           class="btn logout-btn btn-lg">
+           🚪 Logout
+        </a>
+    </div>
+</header>
+
+<!-- ================= FLASH MESSAGES ================= -->
+<div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm auto-dismiss">
+                {{ msg }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+</div>
+
+<!-- ================= PAGE CONTENT ================= -->
+<div class="container mt-4 mb-5">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="text-center text-muted mt-5 mb-3">
+    © 2026 Placement Management System | Built with Flask ⚙️
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+    // Auto dismiss alerts
+    setTimeout(() => {
+        document.querySelectorAll(".auto-dismiss").forEach(alert => {
+            alert.classList.remove("show");
+            setTimeout(() => alert.remove(), 400);
+        });
+    }, 4000);
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains("dark-mode") ? "dark" : "light"
+        );
+    }
+
+    // Load saved theme
+    window.onload = () => {
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+    };
+</script>
+
+</body>
+</html>
