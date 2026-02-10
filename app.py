@@ -5,18 +5,22 @@ from io import BytesIO
 from collections import Counter
 import pandas as pd
 import re
+import os
 from sqlalchemy import or_
 from helpers import apply_student_filters
 
 app = Flask(__name__)
 app.secret_key = "placement_secret_key"
-
+BASE_DIR=os.path.abspath(os.path.dirname(__file__))
+DB_PATH=os.path.join(BASE_DIR,"placement.db")
 # ================= CONFIG =================
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///placement.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
+
+
 
 db = SQLAlchemy(app)
 
@@ -39,6 +43,8 @@ class Student(db.Model):
 
     created_at = db.Column(db.DateTime, default=datetime.now)
 
+with app.app_context():
+    db.create_all()
 # ================= LOGIN =================
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -290,9 +296,18 @@ def delete(id):
     return redirect(url_for("students"))
 
 # ================= RUN =================
+@app.route("/health")
+def health():
+    return "OK", 200
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     if __name__ == "__main__":
         app.run()
 
+
+@app.route("/")
+def home():
+    return redirect(url_for("login"))
